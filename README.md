@@ -13,26 +13,29 @@ The author of Terragrunt, Yevgeniy Brikman, wrote what I would consider the foun
 # Basic Building-Block Concepts
 
 ## State
-Terraform stores the state of deployed infrastructure in a file (you *init* to create a new state). Any time you execute a Terraform command (e.g., *plan*, *apply*, or *destroy*) Terraform will refresh against Provider APIs to ensure it knows (**to the best of its ability**) what the actual deployed infrastructure is, and it will compute a diff against the code in the terraform directory. The state will be stored in a local file by default, which is fine for one person... but gemerally not for organizations. *remote* state can be stored in s3 or similar, and can also lock (only one operation occurring at any time to avoid conflicts) using dynamoDB (or similar).
+Terraform stores the state of deployed infrastructure in a file (you *init* to create a new state). Any time you execute a Terraform command (e.g., `plan`, `apply`, or `destroy`) Terraform will refresh against Provider APIs to ensure it knows (**to the best of its ability**) what the actual deployed infrastructure is, and it will compute a diff against the code in the terraform directory. The state will be stored in a `local` file by default, which is fine for one person... but gemerally not for organizations. `remote` state can be stored in s3 or similar, and can also lock (only one operation occurring at any time to avoid conflicts) using dynamoDB (or similar).
 
 ## Resources
-For each infrastructure API (e.g., AWS, GCP, K8S), there is a Provider which is a plugin that translates between Terraform syntax and a cloud-provider-specific set of resources and APIs. Thus, the most basic building-block of actually specifying infrastructure in Terraform code is the *resource*.
+For each infrastructure API (e.g., AWS, GCP, K8S), there is a Provider which is a plugin that translates between Terraform syntax and a cloud-provider-specific set of resources and APIs. Thus, the most basic building-block of actually specifying infrastructure in Terraform code is the `resource`.
 
 ## Modules
-As of Terraform 0.13, *modules* can be thought of pretty closely to custom-defined resources. Unlike a Provider, which is implementing a lower-level set of API calls and exposing a resource API, a module is being built with existing *resources* and other *blocks* of HCL in normal Terraform code. However, the usage is (now) pretty similar, and the idea is that you can create logical compositions of resources and other modules -- and then once defined, you can instantiate these with different arguments in a predictable way.
+As of Terraform 0.13, `modules` can be thought of pretty closely to custom-defined resources. Unlike a Provider, which is implementing a lower-level set of API calls and exposing a resource API, a module is being built with existing `resources` and other blocks of HCL in normal Terraform code. However, the usage is (now) pretty similar, and the idea is that you can create logical compositions of resources and other modules -- and then once defined, you can instantiate these with different arguments in a predictable way.
 
 A module is any set of valid Terraform files in a directory specifying some number of the following:
 
-  * **Resources and Other Blocks** Often in well-named files and/or a file called *main.tf*, any number of resource and other HCL blocks will be included in the module.
-  * **Variables** By convention, variables are often separated out into their own file (*vars.tf*). *variable* is simply a type of Terraform code block that is used to indicate parameterization of a module -- you have to refer to the variable block where a value is needed in the module, and when the module is invoked all variables must have a value.
-  * **Outputs** By convention, outputs are often separated out into their own file (*outputs.tf*). *output* is simply a type of Terraform code block that is used to indicate values that will be available as results of a module. Values that are available within a module are encapsulated in the module, so any values you want to make available to module callers must utilize the *output* block.
+  * **Resources and Other Blocks** - Often in well-named files and/or a file called `main.tf`, any number of resource and other HCL blocks will be included in the module.
+  * **Variables** - By convention, variables are often separated out into their own file (`vars.tf`). `variable` is simply a type of Terraform code block that is used to indicate parameterization of a module -- you have to refer to the variable block where a value is needed in the module, and when the module is invoked all variables must have a value.
+  * **Outputs** - By convention, outputs are often separated out into their own file (`outputs.tf`). `output` is simply a type of Terraform code block that is used to indicate values that will be available as results of a module. Values that are available within a module are encapsulated in the module, so any values you want to make available to module callers must utilize the *output* block.
 
 Often there is a distinction drawn between two types of module:
 
-  * **child** modules are only intended to be used as building blocks and may (should) lack a *terraform* and *backend* block. 
-  * The actual code you apply, which contains a *terraform* and *backend* block, is called the **root** module, and should act as a 1:1 representation of exactly the infrastructure you've actually deployed in the environment.
+  * **Child** - `child` modules are only intended to be used as building blocks and lack (by design) certain configuration elements.
+  * **Root** - `root` modules are actually applied to a live environment and reflected in a state file, and must include all necessary configuration elements (such as `terraform` and `backend` config blocks).
 
-A module is specified when it is invoked via a *source* argument. A default is via relative path, but modules can be pulled from open source or private module repositories, from source code repositories (via git), or from cloud file stores (e.g., s3).
+A child module is specified when it is invoked via a `source` argument. A common method is by relative path, but modules can also be pulled from public or private module repositories, from source code repositories (e.g., via git), or from cloud file stores (e.g., s3).
+
+## Variable Input
+At some point the literal value of parameters much be supplied and can be supplied in many ways: on the command line (`-var="key=value"`), from environment variables (`TF_VAR_<key>`), via file reference (`-var-file=<name.tfvars>`), and/or via automatic inclusion of files (by naming convention `terraform.tfvars` or `<name>.auto.tfvars`, from the execution directory). Variables 
 
 # Best Practices
 Terraform usage can impact a project's ability to continuously deliver reliable code improvements.
