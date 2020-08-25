@@ -23,13 +23,14 @@ As of Terraform 0.13, *modules* can be thought of pretty closely to custom-defin
 
 A module is any set of valid Terraform files in a directory specifying some number of the following:
 
-**Resources and Other Blocks** Often in well-named files and/or a file called *main.tf*, any number of resource and other HCL blocks will be included in the module.
+  * **Resources and Other Blocks** Often in well-named files and/or a file called *main.tf*, any number of resource and other HCL blocks will be included in the module.
+  * **Variables** By convention, variables are often separated out into their own file (*vars.tf*). *variable* is simply a type of Terraform code block that is used to indicate parameterization of a module -- you have to refer to the variable block where a value is needed in the module, and when the module is invoked all variables must have a value.
+  * **Outputs** By convention, outputs are often separated out into their own file (*outputs.tf*). *output* is simply a type of Terraform code block that is used to indicate values that will be available as results of a module. Values that are available within a module are encapsulated in the module, so any values you want to make available to module callers must utilize the *output* block.
 
-**Variables** By convention, variables are often separated out into their own file (*vars.tf*). *variable* is simply a type of Terraform code block that is used to indicate parameterization of a module -- you have to refer to the variable block where a value is needed in the module, and when the module is invoked all variables must have a value.
+Often there is a distinction drawn between two types of module:
 
-**Outputs** By convention, outputs are often separated out into their own file (*outputs.tf*). *output* is simply a type of Terraform code block that is used to indicate values that will be available as results of a module. Values that are available within a module are encapsulated in the module, so any values you want to make available to module callers must utilize the *output* block.
-
-Often there is a distinction drawn between two types of module: **child** modules are only intended to be used as building blocks and may (should) lack a *terraform* and *backend* block. The actual code you apply, which contains a *terraform* and *backend* block, is called the **root** module, and should act as a 1:1 representation of exactly the infrastructure you've actually deployed in the environment.
+  * **child** modules are only intended to be used as building blocks and may (should) lack a *terraform* and *backend* block. 
+  * The actual code you apply, which contains a *terraform* and *backend* block, is called the **root** module, and should act as a 1:1 representation of exactly the infrastructure you've actually deployed in the environment.
 
 A module is specified when it is invoked via a *source* argument. A default is via relative path, but modules can be pulled from open source or private module repositories, from source code repositories (via git), or from cloud file stores (e.g., s3).
 
