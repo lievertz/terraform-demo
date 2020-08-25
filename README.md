@@ -45,5 +45,5 @@ When modules are sourced from the cloud, (e.g., git), they can reference point-i
 ## Version-Locked Executable Dependencies
 When modules and especially the live module version-lock Terraform and the Provider executables, the project is insulated from changes from Hashicorp and the cloud provider. Note that Terraform is on major version **0**. Breaking changes have frequently hit major organizations that did not do this.
 
-## Representative Root Structure
-Ideally, the Terraform directory structure should function so as to: (a) keep the provision of variables relatively DRY (Don't Repeat Yourself) and related to the environment hierarchy, and (b) act as a 1:1 representation of actual deployed infrastructure in the cloud.
+## Root Structure
+The structure of the root (live) Terraform directory can have major impacts on legibility and function. Ideally, it should be a 1:1 representation of actual deployed infrastructure in the cloud. It is very helpful if variables can be kept relatively DRY (Don't Repeat Yourself) and follow a natural structure of real environment componentization/heirarchies... but this may only be possible with wrappers. It is important to consider state file dependency as well as breaking code into legible and logical chunks -- we want to follow good coding practices and also limit the blast area of mistakes. The general topic of Terraform structure is well-debated, but (and) impactful.
