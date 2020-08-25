@@ -13,7 +13,7 @@ The author of Terragrunt, Yevgeniy Brikman, wrote what I would consider the foun
 # Basic Building-Block Concepts
 
 ## State
-Terraform stores the state of deployed infrastructure in a file (you *init* to create a new state). Any time you execute a Terraform command (e.g., `plan`, `apply`, or `destroy`) Terraform will refresh against Provider APIs to ensure it knows (**to the best of its ability**) what the actual deployed infrastructure is, and it will compute a diff against the code in the terraform directory. The state will be stored in a `local` file by default, which is fine for one person... but gemerally not for organizations. `remote` state can be stored in s3 or similar, and can also lock (only one operation occurring at any time to avoid conflicts) using dynamoDB (or similar).
+Terraform stores the state of deployed infrastructure in a file (you `init` to create a new state). Any time you execute a Terraform command (e.g., `plan`, `apply`, or `destroy`) Terraform will refresh against Provider APIs to ensure it knows (**to the best of its ability**) what the actual deployed infrastructure is, and it will compute a diff against the code in the terraform directory. The state will be stored in a `local` file by default, which is fine for one person... but gemerally not for organizations. `remote` state can be stored in s3 or similar, and can also lock (only one operation occurring at any time to avoid conflicts) using dynamoDB (or similar).
 
 ## Resources
 For each infrastructure API (e.g., AWS, GCP, K8S), there is a Provider which is a plugin that translates between Terraform syntax and a cloud-provider-specific set of resources and APIs. Thus, the most basic building-block of actually specifying infrastructure in Terraform code is the `resource`.
@@ -35,7 +35,7 @@ Often there is a distinction drawn between two types of module:
 A child module is specified when it is invoked via a `source` argument. A common method is by relative path, but modules can also be pulled from public or private module repositories, from source code repositories (e.g., via git), or from cloud file stores (e.g., s3).
 
 ## Variable Input
-At some point the literal value of parameters much be supplied and can be supplied in many ways: on the command line (`-var="key=value"`), from environment variables (`TF_VAR_<key>`), via file reference (`-var-file=<name.tfvars>`), and/or via automatic inclusion of files (by naming convention `terraform.tfvars` or `<name>.auto.tfvars`, from the execution directory). Variables 
+At some point the literal values of parameters must be supplied. They can be supplied in many ways: on the command line (`-var="key=value"`), from environment variables (`TF_VAR_<key>`), via file reference (`-var-file=<name.tfvars>`), and/or via automatic inclusion of files (by naming convention `terraform.tfvars` or `<name>.auto.tfvars`, from the execution directory). Handling variables is one of the most compelling remaining reasons to use Terraform wrappers. Sensitive values may need to be passed into variables, and caution needs to be utilized to prevent those showing up in source code (files), logs/history, etc. Your strategy for this should be part of a well-considered secrets management regime.
 
 # Best Practices
 Terraform usage can impact a project's ability to continuously deliver reliable code improvements.
