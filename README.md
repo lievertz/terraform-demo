@@ -10,7 +10,7 @@ Sometimes orgs run Terraform in a wrapper such as Terragrunt -- this was especia
 
 The author of Terragrunt, Yevgeniy Brikman, wrote what I would consider the foundational work on Terraform, which any serious practitioner should check out: https://blog.gruntwork.io/a-comprehensive-guide-to-terraform-b3d32832baca
 
-# Basic Building-Block Concepts
+# Basic Concepts
 
 ## State
 Terraform stores the state of deployed infrastructure in a file (you `init` to create a new state). Any time you execute a Terraform command (e.g., `plan`, `apply`, or `destroy`) Terraform will refresh against Provider APIs to ensure it knows (**to the best of its ability**) what the actual deployed infrastructure is, and it will compute a diff against the code in the terraform directory. The state will be stored in a `local` file by default, which is fine for one person... but gemerally not for organizations. `remote` state can be stored in s3 or similar, and can also lock (only one operation occurring at any time to avoid conflicts) using dynamoDB (or similar).
@@ -30,7 +30,7 @@ A module is any set of valid Terraform files in a directory specifying some numb
 Often there is a distinction drawn between two types of module:
 
   * **Child** - `child` modules are only intended to be used as building blocks and lack (by design) certain configuration elements.
-  * **Root** - `root` modules are actually applied to a live environment and reflected in a state file, and must include all necessary configuration elements (such as `terraform` and `backend` config blocks).
+  * **Root** - `root` modules are actually applied to a live environment and reflected in a state file, and must include all necessary configuration elements (such as `provider` and `backend` config blocks).
 
 A child module is specified when it is invoked via a `source` argument. A common method is by relative path, but modules can also be pulled from public or private module repositories, from source code repositories (e.g., via git), or from cloud file stores (e.g., s3).
 
@@ -51,3 +51,6 @@ When modules and especially the live module version-lock Terraform and the Provi
 
 ## Root Structure
 The structure of the root (live) Terraform directory can have major impacts on legibility and function. Ideally, it should be a 1:1 representation of actual deployed infrastructure in the cloud. It is very helpful if variables can be kept relatively DRY (Don't Repeat Yourself) and follow a natural structure of real environment componentization/heirarchies... but this may only be possible with wrappers. It is important to consider state file dependency as well as breaking code into legible and logical chunks -- we want to follow good coding practices and also limit the blast area of mistakes. The general topic of Terraform structure is well-debated, but (and) impactful.
+
+## Handy Tools
+There is a strong convention that Terraform code is formatted using `terraform fmt`. This eliminates the entire subject of style and avoids various formatting pitfalls, so use it! There is also a very useful command `terraform validate` which helps get code a fair way toward correctness without needing to connect to a real cloud provider, which is often useful while waiting for access. Finally there is a third-party tool `tflint` which occupies some of the same space, but provides additional value in linting Terraform code.
