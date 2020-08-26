@@ -22,6 +22,8 @@ resource "aws_s3_bucket" "terraform_state" {
       }
     }
   }
+
+  tags = tags.use_tags
 }
 
 resource "aws_dynamodb_table" "terraform_lock" {
@@ -33,4 +35,14 @@ resource "aws_dynamodb_table" "terraform_lock" {
     name = "LockID"
     type = "S"
   }
+
+  tags = tags.use_tags
+}
+
+module "tags" {
+  source  = "git@github.com:lievertz/terraform-demo.git//modules/tags?ref=v0.0.2"
+  env     = "infra"
+  los     = "management"
+  service = "terraform"
+  name    = "terraform state"
 }

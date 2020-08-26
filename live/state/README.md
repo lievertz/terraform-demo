@@ -1,5 +1,5 @@
-# Why is there a statefile here?
-I've been playing with ideas are bootstrapping IaC. You shouldn't keep local state, but you need to create resources in order to have remote state, so where do you keep the state for those resources? My idea is to commit the local state for just the state creation, and then use remote state thereafter. This puts more of the infrastructure into code.
+## Why is there a statefile here?
+I've been playing with ideas around bootstrapping IaC. You shouldn't keep local state, but you need to create resources in order to have remote state, so where do you keep the state for those resources? My idea is to commit the local state for just the state creation, and then use remote state thereafter. This puts more of the infrastructure into code.
 
-# What about security?
+## What about security?
 Good question! The only potentially sensitive information here are the ARNs of the DynamoDB table and the S3 Bucket. I would probably prefer not to commit those in plaintext, but local state encryption isn't a Terraform 0.13 feature and we're well into the realm of reasonable trade-offs here. The ARNs of inaccessible resources would be better kept private, but do not directly expose an attack avenue. The code itself is probably a more significant exposure than these ARNs, so in a case with a private repo, the ARNs won't be directly exposed, and in a case with a public repo, the other code is probably of more interest than those particular ARNs. If anyone has a really compelling insight or alternative I'd be happy to hear about it.
