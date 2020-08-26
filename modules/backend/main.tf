@@ -23,7 +23,7 @@ resource "aws_s3_bucket" "terraform_state" {
     }
   }
 
-  tags = tags.use_tags
+  tags = module.tags.use_tags
 }
 
 resource "aws_dynamodb_table" "terraform_lock" {
@@ -36,7 +36,7 @@ resource "aws_dynamodb_table" "terraform_lock" {
     type = "S"
   }
 
-  tags = tags.use_tags
+  tags = module.tags.use_tags
 }
 
 module "tags" {
