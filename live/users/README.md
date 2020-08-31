@@ -4,6 +4,7 @@ We have decoupled the definition of roles (with IAM permissions) and groups/user
 2) This follows the same pattern necessary for cross-account architectures. Those may not always be needed, but I think it is not a bad idea to standardize in an extensible fashion.
 
 ## Diagram
+<code>
 +--> AWS Account
 |   |----------------------------------------|
 |   |  Group                                 |
@@ -27,7 +28,7 @@ We have decoupled the definition of roles (with IAM permissions) and groups/user
     |                           V            |
     |                       (Do stuff)       |
     |________________________________________|
-
+</code>
 This diagram illustrates the IAM model.
 
 In the first (user) account:

@@ -15,9 +15,9 @@ resource "aws_iam_group" "group" {
 }
 
 resource "aws_iam_policy" "group_sts_policy" {
+  description = "The ${var.group_name} group's IAM policy."
   name        = "${var.group_name}_sts_policy"
   path        = var.group_sts_policy_path
-  description = "The ${var.group_name} group's IAM policy."
   policy      = file("${var.folder_path}/${var.group_name}_sts_policy.json")
 }
 
