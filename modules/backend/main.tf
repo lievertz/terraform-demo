@@ -9,6 +9,14 @@ terraform {
   }
 }
 
+module "tags" {
+  source  = "git@github.com:lievertz/terraform-demo.git//modules/tags?ref=v0.0.5"
+  env     = "infra"
+  los     = "management"
+  service = "terraform"
+  name    = "terraform state"
+}
+
 resource "aws_s3_bucket" "terraform_state" {
   bucket = var.tf_state_aws_s3_bucket_name
 
@@ -37,12 +45,4 @@ resource "aws_dynamodb_table" "terraform_lock" {
   }
 
   tags = module.tags.use_tags
-}
-
-module "tags" {
-  source  = "git@github.com:lievertz/terraform-demo.git//modules/tags?ref=v0.0.2"
-  env     = "infra"
-  los     = "management"
-  service = "terraform"
-  name    = "terraform state"
 }
