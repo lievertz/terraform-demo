@@ -9,14 +9,6 @@ terraform {
   }
 }
 
-module "tags" {
-  source  = "git@github.com:lievertz/terraform-demo.git//modules/tags?ref=v0.0.5"
-  env     = var.env
-  los     = "management"
-  service = "permissions"
-  name    = var.role_name
-}
-
 locals {
   admin_name = "${env}_admin"
   terraform_read_write_name = "${env}_tf_rw"
@@ -24,7 +16,7 @@ locals {
 }
 
 module "users" {
-  source                         = "git@github.com:lievertz/terraform-demo.git//modules/iam/uesr?ref=v0.0.8"
+  source                         = "git@github.com:lievertz/terraform-demo.git//modules/iam/user?ref=v0.0.8"
   for_each   = var.user_group_map
   depends_on = [
     module.admin_group,
