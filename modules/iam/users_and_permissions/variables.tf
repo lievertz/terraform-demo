@@ -10,7 +10,7 @@ variable "assume_role_path" {
 
 variable "user_group_map" {
   description = "user: groups map."
-  type        = map(string)
+  type        = map
 }
 
 variable "tf_state_aws_s3_bucket_name" {

@@ -5,7 +5,7 @@ variable "user_name" {
 
 variable "user_groups_list" {
   description = "A list of group names the user should be a member of."
-  type = list(string)
+  type        = list(string)
 }
 
 variable "user_path" {

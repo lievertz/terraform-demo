@@ -33,7 +33,7 @@ locals {
 }
 
 module "users_and_permissions" {
-  source                         = "git@github.com:lievertz/terraform-demo.git//modules/iam/users_and_permissions?ref=v0.0.10"
+  source                         = "git@github.com:lievertz/terraform-demo.git//modules/iam/users_and_permissions?ref=v0.0.11"
   env                            = var.env
   assume_role_path               = "./standard_assume_role_policy.json"
   user_group_map                 = local.users_groups
