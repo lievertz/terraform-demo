@@ -25,3 +25,8 @@ resource "aws_iam_user" "user" {
 
   tags = module.tags.use_tags
 }
+
+resource "aws_iam_user_group_membership" "groups" {
+  user = aws_iam_user.user.name
+  groups = var.user_groups_list
+}
