@@ -4,31 +4,30 @@ We have decoupled the definition of roles (with IAM permissions) and groups/user
 2) This follows the same pattern necessary for cross-account architectures. Those may not always be needed, but I think it is not a bad idea to standardize in an extensible fashion.
 
 ## Diagram
-<code>
-+--> AWS Account
-|   |----------------------------------------|
-|   |  Group                                 |
-|   |  |------------|                        |
-|   |  |   User(s)  | ----> IAM Policy       |
-|   |  |____________|           |            |
-|   |                    (Permission to      |
-|   |                     assume roles)      |
-|   |                           |            |
-|   |                           |            |
-|   |___________________________|____________|
-|                               |
-+--> AWS Account                |
-|   |---------------------------|------------|
-|   |                           V            |
-|   |                      IAM Role          |
-|   |                     /     |            |
-+----- Assume Role Policy       |            |
-    |                       IAM Policy       |
-    |                           |            |
-    |                           V            |
-    |                       (Do stuff)       |
-    |________________________________________|
-</code>
+    +--> AWS Account
+    |   |----------------------------------------|
+    |   |  Group                                 |
+    |   |  |------------|                        |
+    |   |  |   User(s)  | ----> IAM Policy       |
+    |   |  |____________|           |            |
+    |   |                    (Permission to      |
+    |   |                     assume roles)      |
+    |   |                           |            |
+    |   |                           |            |
+    |   |___________________________|____________|
+    |                               |
+    +--> AWS Account                |
+    |   |---------------------------|------------|
+    |   |                           V            |
+    |   |                      IAM Role          |
+    |   |                     /     |            |
+    +----- Assume Role Policy       |            |
+        |                       IAM Policy       |
+        |                           |            |
+        |                           V            |
+        |                       (Do stuff)       |
+        |________________________________________|
+
 This diagram illustrates the IAM model.
 
 In the first (user) account:
