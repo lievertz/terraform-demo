@@ -23,7 +23,7 @@ locals {
       "${var.env}_admin",
       "${var.env}_tf_rw"
     ],
-    gsmith = [
+    mbuchanan = [
       "${var.env}_tf_rw"
     ],
     pmanning = [

@@ -3,6 +3,6 @@
   "Statement": {
     "Effect": "Allow",
     "Action": "sts:AssumeRole",
-    "Resource": "arn:aws:iam::658754466152:role/lievertz_tf_r"
+    "Resource": "arn:aws:iam::658754466152:role/default/lievertz_tf_r"
   }
 }
